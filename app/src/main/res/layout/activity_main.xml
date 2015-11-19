@@ -12,13 +12,15 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="1 vs 1"
-        android:id="@+id/button_player"/>
+        android:id="@+id/button_player"
+        android:onClick="BtnGameMulti_OnClick"/>
 
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="1 vs IA"
         android:id="@+id/button_ia"
+        android:onClick="BtnGameSolo_OnClick"
         android:layout_below="@id/button_player"/>
 
     <Button

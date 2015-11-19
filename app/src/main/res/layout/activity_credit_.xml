@@ -11,9 +11,7 @@
         android:layout_height="wrap_content"
         android:text="Retour"
         android:id="@+id/buttonRetour"
-        android:layout_alignBottom="@+id/textViewContent"
-        android:layout_toLeftOf="@+id/textViewContent"
-        android:layout_toStartOf="@+id/textViewContent" />
+        android:onClick="retour" />
 
     <TextView android:text="Tic Tac Toe" android:layout_width="wrap_content"
         android:layout_height="wrap_content" android:layout_centerHorizontal="true"
@@ -25,8 +23,5 @@
         android:id="@+id/textViewContent"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/textViewTitle"/>
-
-
-
 
 </RelativeLayout>

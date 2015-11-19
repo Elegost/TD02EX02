@@ -42,4 +42,19 @@ public class MainActivity extends AppCompatActivity {
         Intent openCredit = new Intent(this, Credit_Activity.class);
         startActivity(openCredit);
     }
+
+    public void BtnGameSolo_OnClick(View view)
+    {
+        Intent launchGame = new Intent(this, Game_Activity.class);
+        int GameMode = 1;
+        launchGame.putExtra("GameMode", GameMode);
+        startActivity(launchGame);
+    }
+    public void BtnGameMulti_OnClick(View view)
+    {
+        Intent launchGame = new Intent(this, Game_Activity.class);
+        int GameMode = 2;
+        launchGame.putExtra("GameMode", GameMode);
+        startActivity(launchGame);
+    }
 }

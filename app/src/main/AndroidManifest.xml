@@ -20,6 +20,10 @@
             android:name=".Credit_Activity"
             android:label="@string/title_activity_credit_" >
         </activity>
+        <activity
+            android:name=".Game_Activity"
+            android:label="@string/title_activity_game_" >
+        </activity>
     </application>
 
 </manifest>

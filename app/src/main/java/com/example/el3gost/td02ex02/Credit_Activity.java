@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 public class Credit_Activity extends AppCompatActivity {
@@ -14,7 +15,12 @@ public class Credit_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_credit_);
         creditContent = (TextView) findViewById(R.id.textViewContent);
-        creditContent.setText("Réalisateur : Benjamin Langot\n Compositeur : Benjamin Langot \n Developpeur : Benjamin Langot");
+        creditContent.setText("Réalisateur : Benjamin Langot\n Compositeur : Benjamin Langot\n Developpeur : Benjamin Langot");
+    }
+
+    public void retour(View view)
+    {
+        finish();
     }
 
     @Override
