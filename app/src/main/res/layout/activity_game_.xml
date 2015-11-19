@@ -131,15 +131,14 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/linearLayoutGrille">
+        android:layout_below="@id/linearLayoutGrille"
+        android:layout_centerHorizontal="true">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/textViewGrillePlainText"
-            android:layout_centerHorizontal="true"/>
-
+            android:id="@+id/textViewGrillePlainText" />
     </LinearLayout>
 
 
