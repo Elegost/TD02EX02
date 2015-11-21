@@ -8,16 +8,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class Game_Activity extends AppCompatActivity {
 
-    private ImageView imgGrille;
-    private int currentPlayer;
     private Button btn1;
     private Button btn2;
     private Button btn3;
@@ -52,7 +52,12 @@ public class Game_Activity extends AppCompatActivity {
         curPlayerInfo.setText("Tour de X");
         grillePlainText = (TextView) findViewById(R.id.textViewGrillePlainText);
         grille = new GrilleStatus();
-        currentPlayer=1;
+        drawGrille();
+    }
+
+    public void retour(View view)
+    {
+        finish();
     }
 
     @Override
@@ -80,88 +85,86 @@ public class Game_Activity extends AppCompatActivity {
     public void makeMove(View view)
     {
         int idBtn = view.getId();
-        if (!isBtnFilled(idBtn)) {
-            fillBtn(currentPlayer, idBtn);
-        }
-        if(gameMode == 2) {
-            drawGrille();
-            checkResults();
-            grillePlainText.setText(grille.printPlaintTxtGrille());
-            if (currentPlayer == 1) {
-                currentPlayer = 2;
-                curPlayerInfo.setText("Tour de X");
-            } else {
-                currentPlayer = 1;
-                curPlayerInfo.setText("Tour de O");
+        int moveDone = fillBtn(idBtn);
+        drawGrille();
+        if(checkResults() == -1)
+        {
+            if(gameMode == 1) //Mode solo
+            {
+                if(moveDone == 1) {
+                    makeIAMove();
+                    drawGrille();
+                    checkResults();
+                }
             }
         }
-        else
-        {
-            checkResults();
-            makeIAMove();
-            drawGrille();
-            checkResults();
-            grillePlainText.setText(grille.printPlaintTxtGrille());
-        }
+        grillePlainText.setText(grille.printPlaintTxtGrille());
+
     }
 
     public void makeIAMove()
     {
-        currentPlayer = 2;
         switch (grille.SearchForBestChoiceIA())
         {
-            case 0: grille.setGrilleValue(0, 0, currentPlayer);break;
-            case 1: grille.setGrilleValue(0, 1, currentPlayer);break;
-            case 2: grille.setGrilleValue(0, 2, currentPlayer);break;
-            case 3: grille.setGrilleValue(1, 0, currentPlayer);break;
-            case 4: grille.setGrilleValue(1, 1, currentPlayer);break;
-            case 5: grille.setGrilleValue(1, 2, currentPlayer);break;
-            case 6: grille.setGrilleValue(2, 0, currentPlayer);break;
-            case 7: grille.setGrilleValue(2, 1, currentPlayer);break;
-            case 8: grille.setGrilleValue(2, 2, currentPlayer);break;
+            case 0: grille.setGrilleValue(0, 0);break;
+            case 1: grille.setGrilleValue(0, 1);break;
+            case 2: grille.setGrilleValue(0, 2);break;
+            case 3: grille.setGrilleValue(1, 0);break;
+            case 4: grille.setGrilleValue(1, 1);break;
+            case 5: grille.setGrilleValue(1, 2);break;
+            case 6: grille.setGrilleValue(2, 0);break;
+            case 7: grille.setGrilleValue(2, 1);break;
+            case 8: grille.setGrilleValue(2, 2);break;
         }
-        currentPlayer = 1;
     }
 
-    private void checkResults()
+    public void makeBackMove(View view)
+    {
+        if(gameMode == 2) //Mode multi
+        {
+            grille.removeLastGrilleValue();
+
+        }
+        else //Mode solo
+        {
+            grille.removeLastGrilleValue();
+            grille.removeLastGrilleValue();
+        }
+        drawGrille();
+        grillePlainText.setText(grille.printPlaintTxtGrille());
+    }
+
+    private int checkResults()
     {
         AlertDialog.Builder dlg = new AlertDialog.Builder(this);
         int res = grille.checkResults();
         if(res >= 0)
             CreateDialog(res);
+        return res;
     }
 
-    private boolean isBtnFilled(int IDBtn)
-    {
-        Button btntoCheck = (Button) findViewById(IDBtn);
-        if(btntoCheck.isEnabled() == true)
-            return false;
-        else
-            return true;
-    }
-
-    private void fillBtn(int currentPlayer, int IDBtn)
+    private int fillBtn(int IDBtn)
     {
         Button btntoFill = (Button) findViewById(IDBtn);
         if(btntoFill == btn1)
-            grille.setGrilleValue(0, 0, currentPlayer);
+            return grille.setGrilleValue(0, 0);
         if(btntoFill == btn2)
-            grille.setGrilleValue(0, 1, currentPlayer);
+            return grille.setGrilleValue(0, 1);
         if(btntoFill == btn3)
-            grille.setGrilleValue(0, 2, currentPlayer);
+            return grille.setGrilleValue(0, 2);
         if(btntoFill == btn4)
-            grille.setGrilleValue(1, 0, currentPlayer);
+            return grille.setGrilleValue(1, 0);
         if(btntoFill == btn5)
-            grille.setGrilleValue(1, 1, currentPlayer);
+            return grille.setGrilleValue(1, 1);
         if(btntoFill == btn6)
-            grille.setGrilleValue(1, 2, currentPlayer);
+            return grille.setGrilleValue(1, 2);
         if(btntoFill == btn7)
-            grille.setGrilleValue(2, 0, currentPlayer);
+            return grille.setGrilleValue(2, 0);
         if(btntoFill == btn8)
-            grille.setGrilleValue(2, 1, currentPlayer);
+            return grille.setGrilleValue(2, 1);
         if(btntoFill == btn9)
-            grille.setGrilleValue(2, 2, currentPlayer);
-        btntoFill.setEnabled(false);
+            return grille.setGrilleValue(2, 2);
+        return 0;
     }
 
     private void CreateDialog(int Mode)
@@ -208,11 +211,16 @@ public class Game_Activity extends AppCompatActivity {
                     });break;
 
         }
+        dlg.setCancelable(false); //Pour empecher de pouvoir cliquer et revenir derrière
         dlg.create().show();
     }
 
     private void drawGrille()
     {
+        if (grille.getCurrentPlayer() == 1)
+            curPlayerInfo.setText("Tour de X");
+        else
+            curPlayerInfo.setText("Tour de O");
         btn1.setBackgroundResource(getDrawableForGrille(0, 0));
         btn2.setBackgroundResource(getDrawableForGrille(0, 1));
         btn3.setBackgroundResource(getDrawableForGrille(0, 2));
